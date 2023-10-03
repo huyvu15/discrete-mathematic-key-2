@@ -1,0 +1,1197 @@
+\documentclass[12pt,oneside]{book}
+\usepackage[utf8]{vietnam}
+%%%%%%%%%%%%% Geometry
+\usepackage[a4paper,left=2.5cm,right=2.5cm, bottom=2.5cm,top=2.5cm]{geometry}
+%Khai báo các gói tại đây
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{color}
+% \usepackage{xcolor}
+\usepackage[dvipsnames,table]{xcolor}
+\usepackage{amsmath,amsfonts, amssymb,mathptmx,mathrsfs,mathtools}
+%thay đổi độ lùi đầu dòng
+\usepackage{indentfirst}
+\setlength{\parindent}{1cm}
+% package for background
+\usepackage{anyfontsize}
+\usepackage{sectsty}
+% \usetikzlibrary{calc}
+\usepackage{array}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%header and footer for some pages
+
+\usepackage{fancyhdr}
+\fancypagestyle{kieu_thu_hai}{%
+  \fancyhf{}
+  
+  %header and footer text
+\lhead{\textcolor{gray}{Vũ Văn Huy 20216931 MI2 K66}}
+\rhead{\textcolor{gray}{Date: {~~~/~~~/~~~~}; Page No.: {~~~~}}}
+\cfoot{\textcolor{gray}{Ha Noi University of Science and Technology}}
+
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+% Save standard definitions
+\let\HeadRule\headrule
+\let\FootRule\footrule
+% Add color to standard definitions.
+\renewcommand\headrule{\color{gray}\HeadRule}
+\renewcommand\footrule{\textcolor{gray}{\FootRule}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Gói hộp văn bản
+\usepackage{tcolorbox}
+
+% \usetikzlibrary{calc}
+\usepackage{fontawesome}
+
+% gói lệnh khai báo dòng kẻ
+\usepackage{xhfill} %gói lệnh khai báo tạo dòng kẻ
+
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\star$}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{draftwatermark}
+% tùy chỉnh watermark
+\SetWatermarkText{Vũ Huy} %chữ ký chìm
+\SetWatermarkScale{0.5}
+\SetWatermarkAngle{35} % độ nghiêng, để mặc định là 45 độ
+\SetWatermarkColor{red!5} %màu, !15 là độ đậm nhạt 15%
+\SetWatermarkFontSize{10cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+ 
+\usepackage{listings} %chèn code 
+\lstset{frame=tb,
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+%%%%%%%%%%%%%%% Les paquets
+
+\usepackage[english]{babel}
+\usepackage[palette=munch]{nexus}
+
+%%%%%%%%%%%%%%%% hyperref
+\usepackage{lipsum}
+\usepackage[verbose]{hyperref}
+\hypersetup{ 
+    hidelinks
+}
+\setlength{\XeTeXLinkMargin}{-1pt}
+%%%%%%%%%%%%%%%%%%%%%
+% đoạn này là code trang sách
+\usetikzlibrary{decorations.pathmorphing,calc,shadows.blur,shadings}
+
+\newcounter{mathseed}
+\setcounter{mathseed}{3}
+\pgfmathsetseed{\arabic{mathseed}} % To have predictable results
+% Define a background layer, in which the parchment shape is drawn
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\pgfdeclaredecoration{irregular fractal line}{init}
+{
+  \state{init}[width=\pgfdecoratedinputsegmentremainingdistance]
+  {
+    \pgfpathlineto{\pgfpoint{random*\pgfdecoratedinputsegmentremainingdistance}{(random*\pgfdecorationsegmentamplitude-0.02)*\pgfdecoratedinputsegmentremainingdistance}}
+    \pgfpathlineto{\pgfpoint{\pgfdecoratedinputsegmentremainingdistance}{0pt}}
+  }
+}
+% define some styles
+\tikzset{
+   paper/.style={draw=black!20, blur shadow, every shadow/.style={opacity=1, black}, shading=bilinear interpolation,
+                 lower left=black!20, upper left=black!5, upper right=white, lower right=black!10, fill=none},
+   irregular cloudy border/.style={decoration={irregular fractal line, amplitude=0.2},
+           decorate,
+     },
+   irregular spiky border/.style={decoration={irregular fractal line, amplitude=-0.2},
+           decorate,
+     },
+   ragged border/.style={ decoration={random steps, segment length=7mm, amplitude=2mm},
+           decorate,
+   }
+}
+\def\tornpaper#1{
+\ifthenelse{\isodd{\value{mathseed}}}{%
+\tikz{
+  \node[inner sep=1em] (A) {#1};  % Draw the text of the node
+  \begin{pgfonlayer}{background}  % Draw the shape behind
+  \fill[paper] % recursively decorate the bottom border
+     \pgfextra{\pgfmathsetseed{\arabic{mathseed}}\addtocounter{mathseed}{1}}%
+      {decorate[irregular cloudy border]{decorate{decorate{decorate{decorate[ragged border]{
+        (A.north west) -- (A.north east)
+      }}}}}}
+      -- (A.south east)
+     \pgfextra{\pgfmathsetseed{\arabic{mathseed}}}%
+      {decorate[irregular spiky border]{decorate{decorate{decorate{decorate[ragged border]{
+      -- (A.south west)
+      }}}}}}
+      -- (A.north west);
+  \end{pgfonlayer}}
+}{%
+\tikz{
+  \node[inner sep=1em] (A) {#1};  % Draw the text of the node
+  \begin{pgfonlayer}{background}  % Draw the shape behind
+  \fill[paper] % recursively decorate the bottom border
+     \pgfextra{\pgfmathsetseed{\arabic{mathseed}}\addtocounter{mathseed}{1}}%
+      {decorate[irregular spiky border]{decorate{decorate{decorate{decorate[ragged border]{
+        (A.north east) -- (A.north west)
+      }}}}}}
+      -- (A.south west)
+     \pgfextra{\pgfmathsetseed{\arabic{mathseed}}}%
+      {decorate[irregular cloudy border]{decorate{decorate{decorate{decorate[ragged border]{
+      -- (A.south east)
+      }}}}}}
+      -- (A.north east);
+  \end{pgfonlayer}}
+}}
+%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+\include{titlepage}
+\tableofcontents
+
+
+\newpage
+\chapter*{Mở đầu}
+\indent\vspace{1cm}
+
+\begin{minipage}{15cm}
+
+\hspace{0.5cm}Toán rời rạc bộ môn vừa chợp mắt cái là không biết thầy giảng đến đâu, giảng viên nói mãi vẫn không hiểu \faSmileO, là sự kết hợp giữa rất nhiều kiến thức giải tích đại số thêm combo tin học thuật toán, lý thuyết đồ thị(nghe thầy bảo là môn này có năm tạch 90 \% ) . Nên rất nhiều bạn sẽ rất rén với môn học này \faCommentingO. Sau khi thi xong giữa kì vì điểm quá thấp và cũng vì đam mê hình học nên mình đã tự xoạn ra bộ tài liệu này để ôn lại kiến thức.\\
+
+\indent\hspace{0.5cm} Trên lớp mình không ghi chép đầy đủ chỉ nhớ rồi về làm lại khó tránh những lỗi trình bày. Bài làm ko bao gồm lý thuyết do lý thuyết viết khá đầy đủ trong giáo trình của các thầy cô, về phần lý thuyết đồ thị chỉ bao gồm phần chứng minh một số định lý và bài tập tổng hợp.\faHandORight \faHandOLeft \\
+
+ \indent \hspace{0.5cm} Đây là phiên bản đầu tiên và bài giải do cá nhân mình trực tiếp biên xoạn nên không thể tránh khỏi những sai xót về lỗi đánh máy, trình bày. Mọi người đọc nếu xin đừng cười chê.\\
+\\ \indent \hspace{0.5cm}Mọi đóng góp xin được ghi nhận qua facebook cá nhân 
+ \href{https://www.facebook.com/profile.php?id=100042139878268}{\color{blue}\faFacebookSquare~Vũ Huy}
+\\ \indent \hspace{0.5cm}hoặc qua gmail Huyv80313@gmail.com \color{red}\faEnvelopeO
+ % \\ \color{cyan}\faHeartO % trái tim to lù lù
+\\ \indent \hspace{0.8cm} \color{black}{Thân} \color{brown}\faPencil .......
+\color{black}{} 
+
+\end{minipage}
+
+\chapter{Lý thuyết đồ thị}
+\section{Lý thuyết}
+\subsection{Cần học gì?}
+Phần này không thấy có ví dụ trên slide của thầy nên mình không thêm vào đây
+\\Phần này mình chỉ tổng hợp những phương pháp và các cách chứng minh một số định lý, bài tập đơn giản thầy chữa trên lớp để các bạn rèn luyện tư duy giải các bài toán liên quan đến lý thuyết đồ thị.
+\section{Bài tập}
+\tcbset{colback=green!5!white,colframe=green!75!black}
+\begin{tcolorbox}[title=Vẽ 1 hình bằng 1 nét]
+Thì cái hình đó $\exists$ tất cả các điểm nút là giao điểm của các đường thẳng là số chẵn
+\end{tcolorbox}
+
+Định lý: $G=(V,E)$ là đồ thị vô hướng với m cạnh khi đó:
+\begin{center}
+$\boxed{2m = \displaystyle\lim_{v\in V} deg(V)}$
+\end{center}
+Chứng minh: Mỗi cạnh $e = (u,v)$ được tính 1 lần trong $deg(u)$ và 1 lần trong $deg(v)$
+\\$\Rightarrow \boxed{\text{Hệ quả}}$ Trong đồ thị vô hướng, số đỉnh bậc lẻ là số đỉnh chẵn.
+\\\\ Ví dụ:
+\begin{center}
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,310); %set diagram left start at 0, and has height of 310
+
+%Shape: Circle [id:dp22716901266188883] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (136.93,70.4) .. controls (136.93,67.4) and (139.37,64.97) .. (142.37,64.97) .. controls (145.37,64.97) and (147.8,67.4) .. (147.8,70.4) .. controls (147.8,73.4) and (145.37,75.83) .. (142.37,75.83) .. controls (139.37,75.83) and (136.93,73.4) .. (136.93,70.4) -- cycle ;
+%Straight Lines [id:da7754132506135818] 
+\draw    (147.8,70.4) -- (220.87,70.67) ;
+%Shape: Circle [id:dp571705837623169] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (220.87,70.67) .. controls (220.87,67.67) and (223.3,65.23) .. (226.3,65.23) .. controls (229.3,65.23) and (231.73,67.67) .. (231.73,70.67) .. controls (231.73,73.67) and (229.3,76.1) .. (226.3,76.1) .. controls (223.3,76.1) and (220.87,73.67) .. (220.87,70.67) -- cycle ;
+%Shape: Circle [id:dp8385756099998625] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (304.8,70.93) .. controls (304.8,67.93) and (307.23,65.5) .. (310.23,65.5) .. controls (313.23,65.5) and (315.67,67.93) .. (315.67,70.93) .. controls (315.67,73.93) and (313.23,76.37) .. (310.23,76.37) .. controls (307.23,76.37) and (304.8,73.93) .. (304.8,70.93) -- cycle ;
+%Straight Lines [id:da5913927306950226] 
+\draw    (231.73,70.67) -- (304.8,70.93) ;
+%Shape: Circle [id:dp2543573328898394] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (74.67,130.1) .. controls (74.67,127.1) and (77.1,124.67) .. (80.1,124.67) .. controls (83.1,124.67) and (85.53,127.1) .. (85.53,130.1) .. controls (85.53,133.1) and (83.1,135.53) .. (80.1,135.53) .. controls (77.1,135.53) and (74.67,133.1) .. (74.67,130.1) -- cycle ;
+%Shape: Circle [id:dp9065647241987702] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (157.33,130.77) .. controls (157.33,127.77) and (159.77,125.33) .. (162.77,125.33) .. controls (165.77,125.33) and (168.2,127.77) .. (168.2,130.77) .. controls (168.2,133.77) and (165.77,136.2) .. (162.77,136.2) .. controls (159.77,136.2) and (157.33,133.77) .. (157.33,130.77) -- cycle ;
+%Straight Lines [id:da3396555638837717] 
+\draw    (138.87,74.67) -- (83.53,124.67) ;
+%Straight Lines [id:da7199504716274137] 
+\draw    (222.87,75.33) -- (166.2,126) ;
+%Straight Lines [id:da22994018717179499] 
+\draw    (142.37,75.83) -- (162.77,125.33) ;
+
+
+\end{tikzpicture}
+\end{center}
+$\Rightarrow$ Số đỉnh bậc lẻ: 4.
+\\$G(V,E)$ là đồ thị có hướng
+\begin{center}
+    $\boxed{\displaystyle\lim_{v\in V} deg^+(V) = \displaystyle\lim_{v\in V} deg^-(V)=|E|}$
+\end{center}
+Chứng minh: 
+\begin{center}
+    
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+ 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (220.87,70.67) .. controls (220.87,67.67) and (223.3,65.23) .. (226.3,65.23) .. controls (229.3,65.23) and (231.73,67.67) .. (231.73,70.67) .. controls (231.73,73.67) and (229.3,76.1) .. (226.3,76.1) .. controls (223.3,76.1) and (220.87,73.67) .. (220.87,70.67) -- cycle ;
+%Shape: Circle [id:dp8385756099998625] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (304.8,70.93) .. controls (304.8,67.93) and (307.23,65.5) .. (310.23,65.5) .. controls (313.23,65.5) and (315.67,67.93) .. (315.67,70.93) .. controls (315.67,73.93) and (313.23,76.37) .. (310.23,76.37) .. controls (307.23,76.37) and (304.8,73.93) .. (304.8,70.93) -- cycle ;
+%Straight Lines [id:da5913927306950226] 
+\draw    (231.73,70.67) -- (304.8,70.93) ;
+%Straight Lines [id:da4150707082411318] 
+\draw    (226.3,70.67) -- (273.27,70.67) ;
+\draw [shift={(275.27,70.67)}, rotate = 180] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (220.67,79.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {u};
+% Text Node
+\draw (304.67,79) node [anchor=north west][inner sep=0.75pt]   [align=left] {v};
+
+\end{tikzpicture}
+\end{center}
+Có cung = vào\\
+1 bán bậc ra
+\\1 bán bậc vào
+\\\\$G(V,E)$ được gọi là liên thông nếu 2 đỉnh bất kỳ luôn tìm được đường đi.
+\\$\Rightarrow$ 2 mạng máy tính bất kỳ có thể trao đổi thông tin với nhau $\Leftrightarrow$ Đồ thị tương ứng với mạng máy tính này là đồ thị liên thông.
+\\ Ta gọi đồ thị con của $G(V,E)$ là $H(V,E)$ nếu $W \subseteq V$ và $F\subseteq E$
+\\VD: Cho G là đồ thị vô hướng $n \geq 2$ đỉnh. Biết:
+\begin{center}
+    $\delta(G) = min\{deg(v):v \in V \geq \dfrac{n-1}{2} \}$
+\end{center}
+Chứng minh rằng G liên thông.
+\begin{center}
+    \underline{Giải}
+\end{center}
+Giả sử G không liên thông, khi đó:
+\begin{center}
+    $\delta(G) \geq \dfrac{n-1}{2} $
+\end{center}
+$\Rightarrow$ mỗi thành phần liên thông chứa ít ra
+\begin{center}
+    $\dfrac{n-1}{2}+1 = \dfrac{n+1}{2}$ đỉnh.
+\end{center}
+$\Rightarrow$ đồ thị có ít nhất n+1 đỉnh
+\\ Chứng minh định lý 5.2.4: $2m = \displaystyle\lim_{deg v \vdots 2} deg(v)+\displaystyle\lim_{deg u \not\vdots 2}deg(u) = (1)+(2)$
+\\ (1), (2) đều theo công thức trên
+
+\tcbset{colback=green!5!white,colframe=green!75!black}
+\begin{tcolorbox}[title=K - Liên thông(k - connected)]
+G là đồ thị k liên thông nếu $u, v \in V$ và $\exists$ ít nhất k đường rời rạc nhau, các đỉnh bên chỉ chung nhau 2 điểm đầu mút
+\end{tcolorbox}
+VD:
+\begin{center}
+    
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,310); %set diagram left start at 0, and has height of 310
+
+%Straight Lines [id:da9080861839084886] 
+\draw    (220.6,72) -- (257.93,37.33) ;
+%Straight Lines [id:da8032891501417023] 
+\draw    (257.93,37.33) -- (319.27,37.33) ;
+%Straight Lines [id:da24689868975640294] 
+\draw    (319.27,37.33) -- (359.93,72) ;
+%Straight Lines [id:da43925319541239705] 
+\draw    (220.6,72) -- (260.6,112) ;
+%Straight Lines [id:da32456103895157895] 
+\draw    (260.6,112) -- (321.93,112) ;
+%Straight Lines [id:da725314570679314] 
+\draw    (321.93,112) -- (359.93,72) ;
+%Straight Lines [id:da4582839315046443] 
+\draw    (328.6,146.67) -- (267.27,199.33) ;
+%Straight Lines [id:da16931516980973682] 
+\draw    (267.93,144.67) -- (329.27,199.33) ;
+%Straight Lines [id:da018307956423991856] 
+\draw    (267.27,199.33) -- (267.93,248) ;
+%Straight Lines [id:da5444966517591561] 
+\draw    (329.27,199.33) -- (329.93,248) ;
+%Shape: Circle [id:dp7677218639502126] 
+\draw   (255.23,37.33) .. controls (255.23,35.84) and (256.44,34.63) .. (257.93,34.63) .. controls (259.42,34.63) and (260.63,35.84) .. (260.63,37.33) .. controls (260.63,38.82) and (259.42,40.03) .. (257.93,40.03) .. controls (256.44,40.03) and (255.23,38.82) .. (255.23,37.33) -- cycle ;
+%Shape: Circle [id:dp30872147701647656] 
+\draw   (316.57,37.33) .. controls (316.57,35.84) and (317.78,34.63) .. (319.27,34.63) .. controls (320.76,34.63) and (321.97,35.84) .. (321.97,37.33) .. controls (321.97,38.82) and (320.76,40.03) .. (319.27,40.03) .. controls (317.78,40.03) and (316.57,38.82) .. (316.57,37.33) -- cycle ;
+%Shape: Circle [id:dp3044944407827208] 
+\draw   (357.23,72) .. controls (357.23,70.51) and (358.44,69.3) .. (359.93,69.3) .. controls (361.42,69.3) and (362.63,70.51) .. (362.63,72) .. controls (362.63,73.49) and (361.42,74.7) .. (359.93,74.7) .. controls (358.44,74.7) and (357.23,73.49) .. (357.23,72) -- cycle ;
+%Shape: Circle [id:dp7900446320420296] 
+\draw   (321.93,109.3) .. controls (321.93,109.3) and (321.93,109.3) .. (321.93,109.3) .. controls (321.93,109.3) and (321.93,109.3) .. (321.93,109.3) .. controls (321.93,109.3) and (321.93,109.3) .. (321.93,109.3) .. controls (321.93,109.3) and (321.93,109.3) .. (321.93,109.3) -- cycle ;
+%Shape: Circle [id:dp10112013754731275] 
+\draw   (217.9,72) .. controls (217.9,70.51) and (219.11,69.3) .. (220.6,69.3) .. controls (222.09,69.3) and (223.3,70.51) .. (223.3,72) .. controls (223.3,73.49) and (222.09,74.7) .. (220.6,74.7) .. controls (219.11,74.7) and (217.9,73.49) .. (217.9,72) -- cycle ;
+%Shape: Circle [id:dp6162462065935557] 
+\draw   (257.9,112) .. controls (257.9,110.51) and (259.11,109.3) .. (260.6,109.3) .. controls (262.09,109.3) and (263.3,110.51) .. (263.3,112) .. controls (263.3,113.49) and (262.09,114.7) .. (260.6,114.7) .. controls (259.11,114.7) and (257.9,113.49) .. (257.9,112) -- cycle ;
+%Shape: Circle [id:dp06813474338514003] 
+\draw   (319.23,112) .. controls (319.23,110.51) and (320.44,109.3) .. (321.93,109.3) .. controls (323.42,109.3) and (324.63,110.51) .. (324.63,112) .. controls (324.63,113.49) and (323.42,114.7) .. (321.93,114.7) .. controls (320.44,114.7) and (319.23,113.49) .. (319.23,112) -- cycle ;
+
+% Text Node
+\draw (252,132.33) node [anchor=north west][inner sep=0.75pt]   [align=left] {a};
+% Text Node
+\draw (333.33,131.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {b};
+% Text Node
+\draw (250.67,189.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {d};
+% Text Node
+\draw (308,163.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {c};
+% Text Node
+\draw (334,187) node [anchor=north west][inner sep=0.75pt]   [align=left] {e};
+% Text Node
+\draw (333.33,241.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {f};
+% Text Node
+\draw (256,241.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {g};
+% Text Node
+\draw (242.67,16.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{1}}$};
+% Text Node
+\draw (318.67,15.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{2}}$};
+% Text Node
+\draw (363.33,56.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{3}}$};
+% Text Node
+\draw (327.33,111.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{4}}$};
+% Text Node
+\draw (240.67,112.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{5}}$};
+% Text Node
+\draw (202.67,56.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{6}}$};
+% Text Node
+\draw (432.67,61.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {2 - liên thông};
+% Text Node
+\draw (434.67,186.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {1 - liên thông};
+
+
+\end{tikzpicture}
+\end{center}
+$k \geq l$, $k$ - liên thông $\rightarrow$ $l$ - liên thông.\\
+VD: 3 liên thông $\rightarrow$ chắc chắn 3 liên thông cạnh
+\begin{center}
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da7426139934911271] 
+\draw    (199.93,100.53) -- (199.93,179.87) ;
+%Straight Lines [id:da9427255645394255] 
+\draw    (199.93,100.53) -- (280.2,100.13) ;
+%Straight Lines [id:da09994274682334403] 
+\draw    (280.2,100.13) -- (280.2,179.47) ;
+%Straight Lines [id:da5960996705514408] 
+\draw    (199.93,179.87) -- (280.2,179.47) ;
+%Straight Lines [id:da1851097125893999] 
+\draw    (199.93,100.53) -- (280.2,179.47) ;
+%Straight Lines [id:da9329981408216514] 
+\draw [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ]   (199.93,179.87) -- (280.2,100.13) ;
+%Shape: Circle [id:dp011840318997767163] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,100.53) .. controls (195.42,98.04) and (197.44,96.02) .. (199.93,96.02) .. controls (202.43,96.02) and (204.45,98.04) .. (204.45,100.53) .. controls (204.45,103.03) and (202.43,105.05) .. (199.93,105.05) .. controls (197.44,105.05) and (195.42,103.03) .. (195.42,100.53) -- cycle ;
+%Shape: Circle [id:dp923889456274829] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,100.13) .. controls (275.68,97.64) and (277.71,95.62) .. (280.2,95.62) .. controls (282.69,95.62) and (284.72,97.64) .. (284.72,100.13) .. controls (284.72,102.63) and (282.69,104.65) .. (280.2,104.65) .. controls (277.71,104.65) and (275.68,102.63) .. (275.68,100.13) -- cycle ;
+%Shape: Circle [id:dp12221949810245314] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,179.47) .. controls (275.68,176.97) and (277.71,174.95) .. (280.2,174.95) .. controls (282.69,174.95) and (284.72,176.97) .. (284.72,179.47) .. controls (284.72,181.96) and (282.69,183.98) .. (280.2,183.98) .. controls (277.71,183.98) and (275.68,181.96) .. (275.68,179.47) -- cycle ;
+%Shape: Circle [id:dp7585131843074469] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,179.87) .. controls (195.42,177.37) and (197.44,175.35) .. (199.93,175.35) .. controls (202.43,175.35) and (204.45,177.37) .. (204.45,179.87) .. controls (204.45,182.36) and (202.43,184.38) .. (199.93,184.38) .. controls (197.44,184.38) and (195.42,182.36) .. (195.42,179.87) -- cycle ;
+
+% Text Node
+\draw (180.67,82.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{1}}$};
+% Text Node
+\draw (286.67,84.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{2}}$};
+% Text Node
+\draw (289.33,168.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{3}}$};
+% Text Node
+\draw (179.33,170.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{4}}$};
+
+
+\end{tikzpicture}
+\end{center}
+\begin{align*}
+    &v_1v_2 && v_1v_3\\
+    &v_1v_4v_2 && v_1v_2v_3\\
+    &v_1v_4v_2 && v_1v_4v_3
+\end{align*}
+
+$v_4v_3v_2$( không phải do trùng $v_4$)
+\tcbset{colback=green!5!white,colframe=green!75!black}
+\begin{tcolorbox}[title=Đồ thị k liên thông cạnh (K - edge connected)]
+G là k liên thông cạnh nếu giữa 2 đỉnh $u, v \exists$ ít nhất k đường rời rạc nhau về cạnh(có thể chung đỉnh).
+\end{tcolorbox}
+\begin{center}
+    
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da21045514294962953] 
+\draw    (239.13,79.6) -- (201.13,120.93) ;
+%Straight Lines [id:da21942875250327099] 
+\draw    (201.13,120.93) -- (239.8,160.93) ;
+%Straight Lines [id:da23179434560233725] 
+\draw    (239.13,79.6) -- (277.8,119.6) ;
+%Straight Lines [id:da5017150873242722] 
+\draw    (277.8,119.6) -- (239.8,160.93) ;
+%Straight Lines [id:da9225262477513285] 
+\draw    (277.8,119.6) -- (319.53,81.87) ;
+%Straight Lines [id:da7081144518566469] 
+\draw    (277.8,119.6) -- (316.47,159.6) ;
+%Shape: Circle [id:dp2375927711207202] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (197.88,120.93) .. controls (197.88,119.14) and (199.34,117.68) .. (201.13,117.68) .. controls (202.93,117.68) and (204.38,119.14) .. (204.38,120.93) .. controls (204.38,122.73) and (202.93,124.18) .. (201.13,124.18) .. controls (199.34,124.18) and (197.88,122.73) .. (197.88,120.93) -- cycle ;
+%Shape: Circle [id:dp09744892096804603] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (235.88,79.6) .. controls (235.88,77.81) and (237.34,76.35) .. (239.13,76.35) .. controls (240.93,76.35) and (242.38,77.81) .. (242.38,79.6) .. controls (242.38,81.39) and (240.93,82.85) .. (239.13,82.85) .. controls (237.34,82.85) and (235.88,81.39) .. (235.88,79.6) -- cycle ;
+%Shape: Circle [id:dp39451371538826363] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (236.55,160.93) .. controls (236.55,159.14) and (238.01,157.68) .. (239.8,157.68) .. controls (241.59,157.68) and (243.05,159.14) .. (243.05,160.93) .. controls (243.05,162.73) and (241.59,164.18) .. (239.8,164.18) .. controls (238.01,164.18) and (236.55,162.73) .. (236.55,160.93) -- cycle ;
+%Shape: Circle [id:dp4863237953954982] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (274.55,119.6) .. controls (274.55,117.81) and (276.01,116.35) .. (277.8,116.35) .. controls (279.59,116.35) and (281.05,117.81) .. (281.05,119.6) .. controls (281.05,121.39) and (279.59,122.85) .. (277.8,122.85) .. controls (276.01,122.85) and (274.55,121.39) .. (274.55,119.6) -- cycle ;
+%Shape: Circle [id:dp04858974991960241] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (316.28,81.87) .. controls (316.28,80.07) and (317.74,78.62) .. (319.53,78.62) .. controls (321.33,78.62) and (322.78,80.07) .. (322.78,81.87) .. controls (322.78,83.66) and (321.33,85.12) .. (319.53,85.12) .. controls (317.74,85.12) and (316.28,83.66) .. (316.28,81.87) -- cycle ;
+%Shape: Circle [id:dp4153949086695665] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (313.22,159.6) .. controls (313.22,157.81) and (314.67,156.35) .. (316.47,156.35) .. controls (318.26,156.35) and (319.72,157.81) .. (319.72,159.6) .. controls (319.72,161.39) and (318.26,162.85) .. (316.47,162.85) .. controls (314.67,162.85) and (313.22,161.39) .. (313.22,159.6) -- cycle ;
+%Straight Lines [id:da7397560941301107] 
+\draw    (319.53,85.12) -- (319.72,159.6) ;
+
+% Text Node
+\draw (232,57.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{1}}$};
+% Text Node
+\draw (180.67,108.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{2}}$};
+% Text Node
+\draw (230.67,168.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{3}}$};
+% Text Node
+\draw (324.67,145.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{6}}$};
+% Text Node
+\draw (268.67,127.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{4}}$};
+% Text Node
+\draw (326,66.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{5}}$};
+% Text Node
+\draw (367.33,97.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {2 - liên thông cạnh không là 2 liên thông\\(Vì mọi đường qua $\displaystyle v_{5}$ đều phải qua $\displaystyle v_{4}$};
+
+
+\end{tikzpicture}
+\end{center}
+
+$v_1v_4v_5\\
+v_1v_2v_3v_4v_5v_6v_5\\\\
+\Rightarrow$ không được $\equiv v_4v_5$ 
+\begin{flushleft}
+    
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da21045514294962953] 
+\draw    (239.13,79.6) -- (201.13,120.93) ;
+%Straight Lines [id:da21942875250327099] 
+\draw    (201.13,120.93) -- (239.8,160.93) ;
+%Straight Lines [id:da23179434560233725] 
+\draw    (239.13,79.6) -- (277.8,119.6) ;
+%Straight Lines [id:da5017150873242722] 
+\draw    (277.8,119.6) -- (239.8,160.93) ;
+%Straight Lines [id:da9225262477513285] 
+\draw    (277.8,119.6) -- (319.53,81.87) ;
+%Straight Lines [id:da7081144518566469] 
+\draw    (277.8,119.6) -- (316.47,159.6) ;
+%Shape: Circle [id:dp2375927711207202] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (197.88,120.93) .. controls (197.88,119.14) and (199.34,117.68) .. (201.13,117.68) .. controls (202.93,117.68) and (204.38,119.14) .. (204.38,120.93) .. controls (204.38,122.73) and (202.93,124.18) .. (201.13,124.18) .. controls (199.34,124.18) and (197.88,122.73) .. (197.88,120.93) -- cycle ;
+%Shape: Circle [id:dp09744892096804603] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (235.88,79.6) .. controls (235.88,77.81) and (237.34,76.35) .. (239.13,76.35) .. controls (240.93,76.35) and (242.38,77.81) .. (242.38,79.6) .. controls (242.38,81.39) and (240.93,82.85) .. (239.13,82.85) .. controls (237.34,82.85) and (235.88,81.39) .. (235.88,79.6) -- cycle ;
+%Shape: Circle [id:dp39451371538826363] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (236.55,160.93) .. controls (236.55,159.14) and (238.01,157.68) .. (239.8,157.68) .. controls (241.59,157.68) and (243.05,159.14) .. (243.05,160.93) .. controls (243.05,162.73) and (241.59,164.18) .. (239.8,164.18) .. controls (238.01,164.18) and (236.55,162.73) .. (236.55,160.93) -- cycle ;
+%Shape: Circle [id:dp4863237953954982] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (274.55,119.6) .. controls (274.55,117.81) and (276.01,116.35) .. (277.8,116.35) .. controls (279.59,116.35) and (281.05,117.81) .. (281.05,119.6) .. controls (281.05,121.39) and (279.59,122.85) .. (277.8,122.85) .. controls (276.01,122.85) and (274.55,121.39) .. (274.55,119.6) -- cycle ;
+%Shape: Circle [id:dp04858974991960241] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (316.28,81.87) .. controls (316.28,80.07) and (317.74,78.62) .. (319.53,78.62) .. controls (321.33,78.62) and (322.78,80.07) .. (322.78,81.87) .. controls (322.78,83.66) and (321.33,85.12) .. (319.53,85.12) .. controls (317.74,85.12) and (316.28,83.66) .. (316.28,81.87) -- cycle ;
+%Shape: Circle [id:dp4153949086695665] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (313.22,159.6) .. controls (313.22,157.81) and (314.67,156.35) .. (316.47,156.35) .. controls (318.26,156.35) and (319.72,157.81) .. (319.72,159.6) .. controls (319.72,161.39) and (318.26,162.85) .. (316.47,162.85) .. controls (314.67,162.85) and (313.22,161.39) .. (313.22,159.6) -- cycle ;
+
+% Text Node
+\draw (232,57.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{1}}$};
+% Text Node
+\draw (180.67,108.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{2}}$};
+% Text Node
+\draw (230.67,168.73) node [anchor=north west][inner sep=0.75pt]    {$_{v_{3}}$};
+% Text Node
+\draw (324.67,145.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{6}}$};
+% Text Node
+\draw (268.67,127.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{4}}$};
+% Text Node
+\draw (326,66.07) node [anchor=north west][inner sep=0.75pt]    {$_{v_{5}}$};
+% Text Node
+\draw (367.33,97.67) node [anchor=north west][inner sep=0.75pt]   [align=left] {1 - liên thông cạnh\\(Vì từ $\displaystyle v_{1}\rightarrow v_2$ không chỉ được 2 đường rời rạc nhau về cạnh.)};
+
+
+\end{tikzpicture}
+\end{flushleft}
+
+Chú ý: áp dụng với 2 đỉnh bất kỳ.
+
+\begin{center}
+    
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da9402587596301095] 
+\draw    (348.6,166.13) -- (287.27,218.8) ;
+%Straight Lines [id:da5375797754292122] 
+\draw    (287.93,164.13) -- (349.27,218.8) ;
+%Straight Lines [id:da7403500995964225] 
+\draw    (287.27,218.8) -- (287.93,267.47) ;
+%Straight Lines [id:da3195821520811917] 
+\draw    (349.27,218.8) -- (349.93,267.47) ;
+
+% Text Node
+\draw (272,151.8) node [anchor=north west][inner sep=0.75pt]   [align=left] {a};
+% Text Node
+\draw (353.33,151.13) node [anchor=north west][inner sep=0.75pt]   [align=left] {b};
+% Text Node
+\draw (404,177.47) node [anchor=north west][inner sep=0.75pt]   [align=left] {1 - liên thông cạnh vì a $\rightarrow$ b\\không chỉ được 2 đường rời rạc\\nhau về cạnh};
+
+
+\end{tikzpicture}
+\end{center}
+rời rạc nhau về đỉnh $\rightarrow$ rời rạc nhau về cạnh
+\begin{center}
+    
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da779012906866202] 
+\draw    (199.53,109.53) -- (249.53,110.2) ;
+%Straight Lines [id:da7626796907463105] 
+\draw    (323.53,148.73) -- (299.53,181.13) ;
+%Straight Lines [id:da44836363236773646] 
+\draw    (172.87,148.87) -- (199.53,179.8) ;
+%Straight Lines [id:da09797614172266433] 
+\draw    (172.87,148.87) -- (222.87,149.53) ;
+%Straight Lines [id:da39976321530790293] 
+\draw    (199.53,179.8) -- (249.53,180.47) ;
+%Shape: Circle [id:dp7050904704652963] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (168.13,148.87) .. controls (168.13,146.25) and (170.25,144.13) .. (172.87,144.13) .. controls (175.48,144.13) and (177.6,146.25) .. (177.6,148.87) .. controls (177.6,151.48) and (175.48,153.6) .. (172.87,153.6) .. controls (170.25,153.6) and (168.13,151.48) .. (168.13,148.87) -- cycle ;
+%Shape: Circle [id:dp9117936204369452] 
+\draw   (194.8,109.53) .. controls (194.8,106.92) and (196.92,104.8) .. (199.53,104.8) .. controls (202.15,104.8) and (204.27,106.92) .. (204.27,109.53) .. controls (204.27,112.15) and (202.15,114.27) .. (199.53,114.27) .. controls (196.92,114.27) and (194.8,112.15) .. (194.8,109.53) -- cycle ;
+%Shape: Circle [id:dp5119293290378784] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (194.8,109.53) .. controls (194.8,106.92) and (196.92,104.8) .. (199.53,104.8) .. controls (202.15,104.8) and (204.27,106.92) .. (204.27,109.53) .. controls (204.27,112.15) and (202.15,114.27) .. (199.53,114.27) .. controls (196.92,114.27) and (194.8,112.15) .. (194.8,109.53) -- cycle ;
+%Shape: Circle [id:dp6565852040627784] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (244.8,110.2) .. controls (244.8,107.59) and (246.92,105.47) .. (249.53,105.47) .. controls (252.15,105.47) and (254.27,107.59) .. (254.27,110.2) .. controls (254.27,112.81) and (252.15,114.93) .. (249.53,114.93) .. controls (246.92,114.93) and (244.8,112.81) .. (244.8,110.2) -- cycle ;
+%Straight Lines [id:da25510360493810946] 
+\draw    (222.87,149.53) -- (272.87,150.2) ;
+%Shape: Circle [id:dp2768011788521325] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (218.13,149.53) .. controls (218.13,146.92) and (220.25,144.8) .. (222.87,144.8) .. controls (225.48,144.8) and (227.6,146.92) .. (227.6,149.53) .. controls (227.6,152.15) and (225.48,154.27) .. (222.87,154.27) .. controls (220.25,154.27) and (218.13,152.15) .. (218.13,149.53) -- cycle ;
+%Shape: Circle [id:dp5242654943131118] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (244.8,180.47) .. controls (244.8,177.85) and (246.92,175.73) .. (249.53,175.73) .. controls (252.15,175.73) and (254.27,177.85) .. (254.27,180.47) .. controls (254.27,183.08) and (252.15,185.2) .. (249.53,185.2) .. controls (246.92,185.2) and (244.8,183.08) .. (244.8,180.47) -- cycle ;
+%Straight Lines [id:da0025020598808893624] 
+\draw    (249.53,180.47) -- (299.53,181.13) ;
+%Straight Lines [id:da8990849138159396] 
+\draw    (249.53,110.2) -- (299.53,110.87) ;
+%Straight Lines [id:da6581496561894191] 
+\draw    (272.87,150.2) -- (323.53,148.73) ;
+%Shape: Circle [id:dp7799247552311359] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (294.8,110.87) .. controls (294.8,108.25) and (296.92,106.13) .. (299.53,106.13) .. controls (302.15,106.13) and (304.27,108.25) .. (304.27,110.87) .. controls (304.27,113.48) and (302.15,115.6) .. (299.53,115.6) .. controls (296.92,115.6) and (294.8,113.48) .. (294.8,110.87) -- cycle ;
+%Shape: Circle [id:dp6106352612510983] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (268.13,150.2) .. controls (268.13,147.59) and (270.25,145.47) .. (272.87,145.47) .. controls (275.48,145.47) and (277.6,147.59) .. (277.6,150.2) .. controls (277.6,152.81) and (275.48,154.93) .. (272.87,154.93) .. controls (270.25,154.93) and (268.13,152.81) .. (268.13,150.2) -- cycle ;
+%Shape: Circle [id:dp6266075723224911] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (294.8,181.13) .. controls (294.8,178.52) and (296.92,176.4) .. (299.53,176.4) .. controls (302.15,176.4) and (304.27,178.52) .. (304.27,181.13) .. controls (304.27,183.75) and (302.15,185.87) .. (299.53,185.87) .. controls (296.92,185.87) and (294.8,183.75) .. (294.8,181.13) -- cycle ;
+%Straight Lines [id:da1371062109960961] 
+\draw    (299.53,110.87) -- (323.53,148.73) ;
+%Straight Lines [id:da40149021676813] 
+\draw    (199.53,109.53) -- (172.87,148.87) ;
+%Shape: Circle [id:dp02475575262222396] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (318.8,148.73) .. controls (318.8,146.12) and (320.92,144) .. (323.53,144) .. controls (326.15,144) and (328.27,146.12) .. (328.27,148.73) .. controls (328.27,151.35) and (326.15,153.47) .. (323.53,153.47) .. controls (320.92,153.47) and (318.8,151.35) .. (318.8,148.73) -- cycle ;
+%Shape: Circle [id:dp7262418805976862] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (194.8,179.8) .. controls (194.8,177.19) and (196.92,175.07) .. (199.53,175.07) .. controls (202.15,175.07) and (204.27,177.19) .. (204.27,179.8) .. controls (204.27,182.41) and (202.15,184.53) .. (199.53,184.53) .. controls (196.92,184.53) and (194.8,182.41) .. (194.8,179.8) -- cycle ;
+
+
+
+
+\end{tikzpicture}
+\end{center}
+Nhận xét: G là k liên thông $\rightarrow$ G là k liên thông cạnh, không có chiều ngược lại.
+\\ Phép xóa cạnh và xóa đỉnh thì đơn giản nên mình sẽ không liệt kê ở đây.
+
+\begin{tcolorbox}[title=Số liên thông đỉnh]
+\begin{itemize}
+    \item[-] $K(G)$   (kappa G).
+    \item[-] Là số lượng đỉnh nhỏ nhất cần phải xóa khỏi G để G không còn liên thông.
+    \item[-] Quy ước: Nếu G có 1 đỉnh duy nhất thị coi là không liên thông.
+    \begin{center}
+        
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da6202874610897773] 
+\draw    (199.8,159) -- (200,230) ;
+%Straight Lines [id:da10801138615070482] 
+\draw    (250.8,193) -- (199.8,159) ;
+%Straight Lines [id:da8989542079858563] 
+\draw    (250.8,193) -- (200,230) ;
+%Straight Lines [id:da718630302518962] 
+\draw    (250.8,193) -- (200,230) ;
+%Straight Lines [id:da5362657804637827] 
+\draw    (298.8,160) -- (250.8,193) ;
+%Straight Lines [id:da949205824628186] 
+\draw    (301.8,227) -- (250.8,193) ;
+%Straight Lines [id:da5148900643982033] 
+\draw    (298.8,160) -- (301.8,227) ;
+%Shape: Circle [id:dp6681094835960004] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.07,159) .. controls (195.07,156.39) and (197.19,154.27) .. (199.8,154.27) .. controls (202.41,154.27) and (204.53,156.39) .. (204.53,159) .. controls (204.53,161.61) and (202.41,163.73) .. (199.8,163.73) .. controls (197.19,163.73) and (195.07,161.61) .. (195.07,159) -- cycle ;
+%Shape: Circle [id:dp9409506169066273] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (246.07,193) .. controls (246.07,190.39) and (248.19,188.27) .. (250.8,188.27) .. controls (253.41,188.27) and (255.53,190.39) .. (255.53,193) .. controls (255.53,195.61) and (253.41,197.73) .. (250.8,197.73) .. controls (248.19,197.73) and (246.07,195.61) .. (246.07,193) -- cycle ;
+%Shape: Circle [id:dp35336085148674234] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (294.07,160) .. controls (294.07,157.39) and (296.19,155.27) .. (298.8,155.27) .. controls (301.41,155.27) and (303.53,157.39) .. (303.53,160) .. controls (303.53,162.61) and (301.41,164.73) .. (298.8,164.73) .. controls (296.19,164.73) and (294.07,162.61) .. (294.07,160) -- cycle ;
+%Shape: Circle [id:dp9330829362437085] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (297.07,227) .. controls (297.07,224.39) and (299.19,222.27) .. (301.8,222.27) .. controls (304.41,222.27) and (306.53,224.39) .. (306.53,227) .. controls (306.53,229.61) and (304.41,231.73) .. (301.8,231.73) .. controls (299.19,231.73) and (297.07,229.61) .. (297.07,227) -- cycle ;
+%Shape: Circle [id:dp192856342020423] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.27,230) .. controls (195.27,227.39) and (197.39,225.27) .. (200,225.27) .. controls (202.61,225.27) and (204.73,227.39) .. (204.73,230) .. controls (204.73,232.61) and (202.61,234.73) .. (200,234.73) .. controls (197.39,234.73) and (195.27,232.61) .. (195.27,230) -- cycle ;
+
+% Text Node
+\draw (377,181.4) node [anchor=north west][inner sep=0.75pt]    {$\Rightarrow \ K( G) \ =\ 1$};
+% Text Node
+\draw (243,240) node [anchor=north west][inner sep=0.75pt]   [align=left] {G};
+\end{tikzpicture}
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da7426139934911271] 
+\draw    (199.93,100.53) -- (199.93,179.87) ;
+%Straight Lines [id:da9427255645394255] 
+\draw    (199.93,100.53) -- (280.2,100.13) ;
+%Straight Lines [id:da09994274682334403] 
+\draw    (280.2,100.13) -- (280.2,179.47) ;
+%Straight Lines [id:da5960996705514408] 
+\draw    (199.93,179.87) -- (280.2,179.47) ;
+%Straight Lines [id:da1851097125893999] 
+\draw    (199.93,100.53) -- (280.2,179.47) ;
+%Straight Lines [id:da9329981408216514] 
+\draw [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ]   (199.93,179.87) -- (280.2,100.13) ;
+%Shape: Circle [id:dp011840318997767163] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,100.53) .. controls (195.42,98.04) and (197.44,96.02) .. (199.93,96.02) .. controls (202.43,96.02) and (204.45,98.04) .. (204.45,100.53) .. controls (204.45,103.03) and (202.43,105.05) .. (199.93,105.05) .. controls (197.44,105.05) and (195.42,103.03) .. (195.42,100.53) -- cycle ;
+%Shape: Circle [id:dp923889456274829] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,100.13) .. controls (275.68,97.64) and (277.71,95.62) .. (280.2,95.62) .. controls (282.69,95.62) and (284.72,97.64) .. (284.72,100.13) .. controls (284.72,102.63) and (282.69,104.65) .. (280.2,104.65) .. controls (277.71,104.65) and (275.68,102.63) .. (275.68,100.13) -- cycle ;
+%Shape: Circle [id:dp12221949810245314] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,179.47) .. controls (275.68,176.97) and (277.71,174.95) .. (280.2,174.95) .. controls (282.69,174.95) and (284.72,176.97) .. (284.72,179.47) .. controls (284.72,181.96) and (282.69,183.98) .. (280.2,183.98) .. controls (277.71,183.98) and (275.68,181.96) .. (275.68,179.47) -- cycle ;
+%Shape: Circle [id:dp7585131843074469] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,179.87) .. controls (195.42,177.37) and (197.44,175.35) .. (199.93,175.35) .. controls (202.43,175.35) and (204.45,177.37) .. (204.45,179.87) .. controls (204.45,182.36) and (202.43,184.38) .. (199.93,184.38) .. controls (197.44,184.38) and (195.42,182.36) .. (195.42,179.87) -- cycle ;
+%Straight Lines [id:da739901213039867] 
+\draw    (199.93,179.87) -- (241.8,223.8) ;
+%Straight Lines [id:da17074535102148247] 
+\draw    (280.2,179.47) -- (241.8,223.8) ;
+%Shape: Circle [id:dp18034570094154745] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (237.28,219.28) .. controls (237.28,216.79) and (239.31,214.77) .. (241.8,214.77) .. controls (244.29,214.77) and (246.32,216.79) .. (246.32,219.28) .. controls (246.32,221.78) and (244.29,223.8) .. (241.8,223.8) .. controls (239.31,223.8) and (237.28,221.78) .. (237.28,219.28) -- cycle ;
+%Straight Lines [id:da2867370627995023] 
+\draw    (199.93,100.53) -- (241.8,219.28) ;
+%Straight Lines [id:da32365304131508577] 
+\draw    (280.2,100.13) -- (241.8,219.28) ;
+
+% Text Node
+\draw (376,133.4) node [anchor=north west][inner sep=0.75pt]    {$\Rightarrow \ K( G) \ =4\ $};
+% Text Node
+\draw (233,239) node [anchor=north west][inner sep=0.75pt]   [align=left] {G};
+
+
+\end{tikzpicture}
+
+    \end{center}
+\end{itemize}
+\end{tcolorbox}
+
+
+\begin{tcolorbox}[title=Số liên thông cạnh (edge connectivity)]
+Là số lượng cạnh nhỏ nhất của tập $S$ mà $G-S$ mất tính liên thông. $K'(G)$
+\begin{flushleft}
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da5800502263190406] 
+\draw    (100,108) -- (179.8,107) ;
+%Straight Lines [id:da16321928975664668] 
+\draw    (179.8,107) -- (259.6,106) ;
+%Shape: Circle [id:dp08453925815634533] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (95.27,108) .. controls (95.27,105.39) and (97.39,103.27) .. (100,103.27) .. controls (102.61,103.27) and (104.73,105.39) .. (104.73,108) .. controls (104.73,110.61) and (102.61,112.73) .. (100,112.73) .. controls (97.39,112.73) and (95.27,110.61) .. (95.27,108) -- cycle ;
+%Shape: Circle [id:dp3491980531560239] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (170.33,107) .. controls (170.33,104.39) and (172.45,102.27) .. (175.07,102.27) .. controls (177.68,102.27) and (179.8,104.39) .. (179.8,107) .. controls (179.8,109.61) and (177.68,111.73) .. (175.07,111.73) .. controls (172.45,111.73) and (170.33,109.61) .. (170.33,107) -- cycle ;
+%Shape: Circle [id:dp18195019450280103] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (250.13,106) .. controls (250.13,103.39) and (252.25,101.27) .. (254.87,101.27) .. controls (257.48,101.27) and (259.6,103.39) .. (259.6,106) .. controls (259.6,108.61) and (257.48,110.73) .. (254.87,110.73) .. controls (252.25,110.73) and (250.13,108.61) .. (250.13,106) -- cycle ;
+
+% Text Node
+\draw (140,124.4) node [anchor=north west][inner sep=0.75pt]    {$K'( G) \ =\ 1$};
+% Text Node
+\draw (135,102) node [anchor=north west][inner sep=0.75pt]   [align=left] {x};
+
+
+\end{tikzpicture}
+
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da21045514294962953] 
+\draw    (125.13,111.6) -- (87.13,152.93) ;
+%Straight Lines [id:da21942875250327099] 
+\draw    (87.13,152.93) -- (125.8,192.93) ;
+%Straight Lines [id:da23179434560233725] 
+\draw    (125.13,111.6) -- (163.8,151.6) ;
+%Straight Lines [id:da5017150873242722] 
+\draw    (163.8,151.6) -- (125.8,192.93) ;
+%Straight Lines [id:da9225262477513285] 
+\draw    (163.8,151.6) -- (205.53,113.87) ;
+%Straight Lines [id:da7081144518566469] 
+\draw    (163.8,151.6) -- (202.47,191.6) ;
+%Shape: Circle [id:dp2375927711207202] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (83.88,152.93) .. controls (83.88,151.14) and (85.34,149.68) .. (87.13,149.68) .. controls (88.93,149.68) and (90.38,151.14) .. (90.38,152.93) .. controls (90.38,154.73) and (88.93,156.18) .. (87.13,156.18) .. controls (85.34,156.18) and (83.88,154.73) .. (83.88,152.93) -- cycle ;
+%Shape: Circle [id:dp09744892096804603] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (121.88,111.6) .. controls (121.88,109.81) and (123.34,108.35) .. (125.13,108.35) .. controls (126.93,108.35) and (128.38,109.81) .. (128.38,111.6) .. controls (128.38,113.39) and (126.93,114.85) .. (125.13,114.85) .. controls (123.34,114.85) and (121.88,113.39) .. (121.88,111.6) -- cycle ;
+%Shape: Circle [id:dp39451371538826363] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (122.55,192.93) .. controls (122.55,191.14) and (124.01,189.68) .. (125.8,189.68) .. controls (127.59,189.68) and (129.05,191.14) .. (129.05,192.93) .. controls (129.05,194.73) and (127.59,196.18) .. (125.8,196.18) .. controls (124.01,196.18) and (122.55,194.73) .. (122.55,192.93) -- cycle ;
+%Shape: Circle [id:dp4863237953954982] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (160.55,151.6) .. controls (160.55,149.81) and (162.01,148.35) .. (163.8,148.35) .. controls (165.59,148.35) and (167.05,149.81) .. (167.05,151.6) .. controls (167.05,153.39) and (165.59,154.85) .. (163.8,154.85) .. controls (162.01,154.85) and (160.55,153.39) .. (160.55,151.6) -- cycle ;
+%Shape: Circle [id:dp04858974991960241] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (202.28,113.87) .. controls (202.28,112.07) and (203.74,110.62) .. (205.53,110.62) .. controls (207.33,110.62) and (208.78,112.07) .. (208.78,113.87) .. controls (208.78,115.66) and (207.33,117.12) .. (205.53,117.12) .. controls (203.74,117.12) and (202.28,115.66) .. (202.28,113.87) -- cycle ;
+%Shape: Circle [id:dp4153949086695665] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (199.22,191.6) .. controls (199.22,189.81) and (200.67,188.35) .. (202.47,188.35) .. controls (204.26,188.35) and (205.72,189.81) .. (205.72,191.6) .. controls (205.72,193.39) and (204.26,194.85) .. (202.47,194.85) .. controls (200.67,194.85) and (199.22,193.39) .. (199.22,191.6) -- cycle ;
+%Straight Lines [id:da7397560941301107] 
+\draw    (205.53,117.12) -- (205.72,191.6) ;
+%Straight Lines [id:da04903728527650886] 
+\draw    (428.13,105.6) -- (390.13,146.93) ;
+%Straight Lines [id:da2880536420842903] 
+\draw    (390.13,146.93) -- (428.8,186.93) ;
+%Straight Lines [id:da38398076942557524] 
+\draw    (428.13,105.6) -- (466.8,145.6) ;
+%Straight Lines [id:da5248224351883326] 
+\draw    (466.8,145.6) -- (428.8,186.93) ;
+%Shape: Circle [id:dp7121603518747563] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (386.88,146.93) .. controls (386.88,145.14) and (388.34,143.68) .. (390.13,143.68) .. controls (391.93,143.68) and (393.38,145.14) .. (393.38,146.93) .. controls (393.38,148.73) and (391.93,150.18) .. (390.13,150.18) .. controls (388.34,150.18) and (386.88,148.73) .. (386.88,146.93) -- cycle ;
+%Shape: Circle [id:dp4129847642817033] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (424.88,105.6) .. controls (424.88,103.81) and (426.34,102.35) .. (428.13,102.35) .. controls (429.93,102.35) and (431.38,103.81) .. (431.38,105.6) .. controls (431.38,107.39) and (429.93,108.85) .. (428.13,108.85) .. controls (426.34,108.85) and (424.88,107.39) .. (424.88,105.6) -- cycle ;
+%Shape: Circle [id:dp13640618185052134] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (425.55,186.93) .. controls (425.55,185.14) and (427.01,183.68) .. (428.8,183.68) .. controls (430.59,183.68) and (432.05,185.14) .. (432.05,186.93) .. controls (432.05,188.73) and (430.59,190.18) .. (428.8,190.18) .. controls (427.01,190.18) and (425.55,188.73) .. (425.55,186.93) -- cycle ;
+%Shape: Circle [id:dp16329805675034947] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (463.55,145.6) .. controls (463.55,143.81) and (465.01,142.35) .. (466.8,142.35) .. controls (468.59,142.35) and (470.05,143.81) .. (470.05,145.6) .. controls (470.05,147.39) and (468.59,148.85) .. (466.8,148.85) .. controls (465.01,148.85) and (463.55,147.39) .. (463.55,145.6) -- cycle ;
+%Shape: Circle [id:dp1843690983557651] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (537.28,104.87) .. controls (537.28,103.07) and (538.74,101.62) .. (540.53,101.62) .. controls (542.33,101.62) and (543.78,103.07) .. (543.78,104.87) .. controls (543.78,106.66) and (542.33,108.12) .. (540.53,108.12) .. controls (538.74,108.12) and (537.28,106.66) .. (537.28,104.87) -- cycle ;
+%Shape: Circle [id:dp12070082253233583] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (537.47,182.6) .. controls (537.47,180.81) and (538.92,179.35) .. (540.72,179.35) .. controls (542.51,179.35) and (543.97,180.81) .. (543.97,182.6) .. controls (543.97,184.39) and (542.51,185.85) .. (540.72,185.85) .. controls (538.92,185.85) and (537.47,184.39) .. (537.47,182.6) -- cycle ;
+%Straight Lines [id:da35767512501558807] 
+\draw    (540.53,108.12) -- (540.72,182.6) ;
+
+% Text Node
+\draw (261,133.4) node [anchor=north west][inner sep=0.75pt]    {$ \begin{array}{l}
+K'( G) \ \geqslant \ 2\\
+\ \ \ \ \ \ \ \ \ \ \ =\ 2
+\end{array}$};
+
+
+\end{tikzpicture}
+\end{flushleft}
+- Lưu ý: $K$ - Liên thông cạnh $\Rightarrow K'(G) \geq k$    
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Khoảng cách và một số lưu ý:]
+- Khoảng cách giữa 2 đỉnh trong G, ký hiệu là $d(u,v)$ - distance.
+\\- Là số lượng cạnh trong đường đi kết nối giữa chúng.
+
+\begin{center}
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da7426139934911271] 
+\draw    (199.93,100.53) -- (199.93,179.87) ;
+%Straight Lines [id:da9427255645394255] 
+\draw    (199.93,100.53) -- (280.2,100.13) ;
+%Straight Lines [id:da09994274682334403] 
+\draw    (280.2,100.13) -- (280.2,179.47) ;
+%Straight Lines [id:da5960996705514408] 
+\draw    (199.93,179.87) -- (280.2,179.47) ;
+%Shape: Circle [id:dp011840318997767163] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,100.53) .. controls (195.42,98.04) and (197.44,96.02) .. (199.93,96.02) .. controls (202.43,96.02) and (204.45,98.04) .. (204.45,100.53) .. controls (204.45,103.03) and (202.43,105.05) .. (199.93,105.05) .. controls (197.44,105.05) and (195.42,103.03) .. (195.42,100.53) -- cycle ;
+%Shape: Circle [id:dp923889456274829] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,100.13) .. controls (275.68,97.64) and (277.71,95.62) .. (280.2,95.62) .. controls (282.69,95.62) and (284.72,97.64) .. (284.72,100.13) .. controls (284.72,102.63) and (282.69,104.65) .. (280.2,104.65) .. controls (277.71,104.65) and (275.68,102.63) .. (275.68,100.13) -- cycle ;
+%Shape: Circle [id:dp12221949810245314] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (275.68,179.47) .. controls (275.68,176.97) and (277.71,174.95) .. (280.2,174.95) .. controls (282.69,174.95) and (284.72,176.97) .. (284.72,179.47) .. controls (284.72,181.96) and (282.69,183.98) .. (280.2,183.98) .. controls (277.71,183.98) and (275.68,181.96) .. (275.68,179.47) -- cycle ;
+%Shape: Circle [id:dp7585131843074469] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (195.42,179.87) .. controls (195.42,177.37) and (197.44,175.35) .. (199.93,175.35) .. controls (202.43,175.35) and (204.45,177.37) .. (204.45,179.87) .. controls (204.45,182.36) and (202.43,184.38) .. (199.93,184.38) .. controls (197.44,184.38) and (195.42,182.36) .. (195.42,179.87) -- cycle ;
+%Straight Lines [id:da5020140656478653] 
+\draw    (279.13,97.6) -- (317.8,137.6) ;
+%Straight Lines [id:da54149607387729] 
+\draw    (317.8,137.6) -- (360.8,180.6) ;
+%Straight Lines [id:da7878450026002819] 
+\draw    (359.53,99.87) -- (360.8,180.6) ;
+%Straight Lines [id:da6991931216923182] 
+\draw    (359.53,99.87) -- (280.04,179.62) ;
+%Shape: Circle [id:dp25962679437261915] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (356.28,180.6) .. controls (356.28,178.11) and (358.31,176.08) .. (360.8,176.08) .. controls (363.29,176.08) and (365.32,178.11) .. (365.32,180.6) .. controls (365.32,183.09) and (363.29,185.12) .. (360.8,185.12) .. controls (358.31,185.12) and (356.28,183.09) .. (356.28,180.6) -- cycle ;
+%Shape: Circle [id:dp41356027879273416] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (355.02,99.87) .. controls (355.02,97.37) and (357.04,95.35) .. (359.53,95.35) .. controls (362.03,95.35) and (364.05,97.37) .. (364.05,99.87) .. controls (364.05,102.36) and (362.03,104.38) .. (359.53,104.38) .. controls (357.04,104.38) and (355.02,102.36) .. (355.02,99.87) -- cycle ;
+%Shape: Circle [id:dp4229522389822651] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (315.27,139.75) .. controls (315.27,137.25) and (317.29,135.23) .. (319.79,135.23) .. controls (322.28,135.23) and (324.3,137.25) .. (324.3,139.75) .. controls (324.3,142.24) and (322.28,144.26) .. (319.79,144.26) .. controls (317.29,144.26) and (315.27,142.24) .. (315.27,139.75) -- cycle ;
+
+% Text Node
+\draw (180,80.4) node [anchor=north west][inner sep=0.75pt]    {$u_{2}$};
+% Text Node
+\draw (272,78.4) node [anchor=north west][inner sep=0.75pt]    {$u_{1}$};
+% Text Node
+\draw (181,180.4) node [anchor=north west][inner sep=0.75pt]    {$u_{3}$};
+% Text Node
+\draw (268,184.4) node [anchor=north west][inner sep=0.75pt]    {$u_{4}$};
+% Text Node
+\draw (310,144.4) node [anchor=north west][inner sep=0.75pt]    {$u_{5}$};
+% Text Node
+\draw (366,82.4) node [anchor=north west][inner sep=0.75pt]    {$u_{6}$};
+% Text Node
+\draw (367.32,184) node [anchor=north west][inner sep=0.75pt]    {$u_{7}$};
+
+
+\end{tikzpicture}
+\end{center}
+\begin{itemize}
+    \item[] $u_6u_7u_5u_4u_3$
+    \item[] $u_6u_7u_5u_1u_2u_3$
+    \item[] $u_6u_7....$
+    \item[] $u_6u_5u_4u_3$: Khoảng cách: $d(u_6,u_3) = 3$
+\end{itemize}
+- Khoảng cách d: $V \times V \rightarrow  Z^+ \cup \{ 0\}$. Do 0 là 1 trường hợp đặc biệt.
+\begin{enumerate}
+    \item $d(u,v) = 0 \Rightarrow u \equiv v$
+    \item $d(u,v) = d(v,u)$
+    \item $d(u,v) +d(v,w) \geq d(u,w)$
+    \item $d(u,v) = \infty$  (trong số 1 số thuật toán lại quy ước là -1 ).
+\end{enumerate}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Độ lệch tâm của đỉnh $v$]
+\begin{center}
+    $e(u) = \underset{v\in V}{max} \thickspace d(u,v)$
+\end{center}
+- Là khoảng cách lớn nhất giữa $u$ và các đinh còn lại $(V \backslash \{u\})$ 
+
+
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da8819618587867237] 
+\draw    (179.13,114.6) -- (123.8,115.6) ;
+%Straight Lines [id:da0975016758412004] 
+\draw    (121.8,154.6) -- (179.8,195.93) ;
+%Straight Lines [id:da5509338920089863] 
+\draw    (179.13,114.6) -- (217.8,154.6) ;
+%Straight Lines [id:da2384732556293001] 
+\draw    (217.8,154.6) -- (179.8,195.93) ;
+%Shape: Circle [id:dp30272781731284426] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (118.55,154.6) .. controls (118.55,152.81) and (120.01,151.35) .. (121.8,151.35) .. controls (123.59,151.35) and (125.05,152.81) .. (125.05,154.6) .. controls (125.05,156.39) and (123.59,157.85) .. (121.8,157.85) .. controls (120.01,157.85) and (118.55,156.39) .. (118.55,154.6) -- cycle ;
+%Shape: Circle [id:dp8369018613813053] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (175.88,114.6) .. controls (175.88,112.81) and (177.34,111.35) .. (179.13,111.35) .. controls (180.93,111.35) and (182.38,112.81) .. (182.38,114.6) .. controls (182.38,116.39) and (180.93,117.85) .. (179.13,117.85) .. controls (177.34,117.85) and (175.88,116.39) .. (175.88,114.6) -- cycle ;
+%Shape: Circle [id:dp551125656039382] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (176.55,195.93) .. controls (176.55,194.14) and (178.01,192.68) .. (179.8,192.68) .. controls (181.59,192.68) and (183.05,194.14) .. (183.05,195.93) .. controls (183.05,197.73) and (181.59,199.18) .. (179.8,199.18) .. controls (178.01,199.18) and (176.55,197.73) .. (176.55,195.93) -- cycle ;
+%Shape: Circle [id:dp5230117881684848] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (214.55,154.6) .. controls (214.55,152.81) and (216.01,151.35) .. (217.8,151.35) .. controls (219.59,151.35) and (221.05,152.81) .. (221.05,154.6) .. controls (221.05,156.39) and (219.59,157.85) .. (217.8,157.85) .. controls (216.01,157.85) and (214.55,156.39) .. (214.55,154.6) -- cycle ;
+%Straight Lines [id:da4923611792920244] 
+\draw    (179.14,115.08) -- (179.8,192.68) ;
+%Straight Lines [id:da1419258578817182] 
+\draw    (121.8,154.6) -- (217.8,154.6) ;
+%Shape: Circle [id:dp19544500683174104] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (120.55,115.6) .. controls (120.55,113.81) and (122.01,112.35) .. (123.8,112.35) .. controls (125.59,112.35) and (127.05,113.81) .. (127.05,115.6) .. controls (127.05,117.39) and (125.59,118.85) .. (123.8,118.85) .. controls (122.01,118.85) and (120.55,117.39) .. (120.55,115.6) -- cycle ;
+
+% Text Node
+\draw (116.67,97.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{1}}$};
+% Text Node
+\draw (171.67,96.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{2}}$};
+% Text Node
+\draw (220.67,146.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{3}}$};
+% Text Node
+\draw (171.67,199.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{4}}$};
+% Text Node
+\draw (104.67,147.4) node [anchor=north west][inner sep=0.75pt]    {$_{v_{5}}$};
+% Text Node
+\draw (364,102.4) node [anchor=north west][inner sep=0.75pt]    {$e( v_{1}) \ =\ 3$};
+% Text Node
+\draw (365,127.4) node [anchor=north west][inner sep=0.75pt]    {$e( v_{2}) \ =\ 2$};
+% Text Node
+\draw (487,126.4) node [anchor=north west][inner sep=0.75pt]    {$e( v_{5}) \ =\ 3$};
+% Text Node
+\draw (487,100.4) node [anchor=north west][inner sep=0.75pt]    {$e( v_{4}) \ =\ 2$};
+% Text Node
+\draw (365,153.4) node [anchor=north west][inner sep=0.75pt]    {$e( v_{3}) \ =\ 2$};
+
+
+\end{tikzpicture}
+\begin{itemize}
+    \item Đường kính: $diam(G) = max \{ e(v) \thickspace\forall v \in V(G)\}$
+    \begin{itemize}
+        \item[] $H_1: \quad diam(H_1) = 3$
+        \item[] $H_2: \quad diam(H_2) = 2$ 
+    \end{itemize}
+    \item Bán kính: $rad(G) = min\{ e(v) = v \in V \}$
+    \begin{itemize}
+        \item[] $H_1: \quad rad(H_1) = 2$
+        \item[] $H_2: \quad rad(H_2) = 1$ 
+    \end{itemize}
+\end{itemize}
+\end{tcolorbox}
+
+\begin{tcolorbox}[title=Một số đồ thị đặc biệt]
+\begin{enumerate}
+    \item Đường: $P_n$, n là số đỉnh.
+    $|V(P_n)| = n$\\
+    $|E(P_n)| = n - 1$
+    
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da39721473805860996] 
+\draw    (100,120) -- (238.8,120.2) ;
+%Straight Lines [id:da6536648987993046] 
+\draw    (395.8,120.2) -- (480.8,120.2) ;
+%Straight Lines [id:da7593878399155307] 
+\draw    (395.8,120.2) -- (395.8,181.2) ;
+%Straight Lines [id:da7587032372273581] 
+\draw    (480.8,120.2) -- (480.8,181.2) ;
+%Shape: Circle [id:dp8015371385317414] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (234.84,120.2) .. controls (234.84,118.01) and (236.61,116.24) .. (238.8,116.24) .. controls (240.99,116.24) and (242.76,118.01) .. (242.76,120.2) .. controls (242.76,122.39) and (240.99,124.16) .. (238.8,124.16) .. controls (236.61,124.16) and (234.84,122.39) .. (234.84,120.2) -- cycle ;
+%Shape: Circle [id:dp3454017225438182] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (100,120) .. controls (100,117.81) and (101.77,116.04) .. (103.96,116.04) .. controls (106.14,116.04) and (107.92,117.81) .. (107.92,120) .. controls (107.92,122.19) and (106.14,123.96) .. (103.96,123.96) .. controls (101.77,123.96) and (100,122.19) .. (100,120) -- cycle ;
+%Shape: Circle [id:dp7796605159384291] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (165.44,120.1) .. controls (165.44,117.91) and (167.21,116.14) .. (169.4,116.14) .. controls (171.59,116.14) and (173.36,117.91) .. (173.36,120.1) .. controls (173.36,122.29) and (171.59,124.06) .. (169.4,124.06) .. controls (167.21,124.06) and (165.44,122.29) .. (165.44,120.1) -- cycle ;
+%Shape: Circle [id:dp6229490807486262] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (391.84,120.2) .. controls (391.84,118.01) and (393.61,116.24) .. (395.8,116.24) .. controls (397.99,116.24) and (399.76,118.01) .. (399.76,120.2) .. controls (399.76,122.39) and (397.99,124.16) .. (395.8,124.16) .. controls (393.61,124.16) and (391.84,122.39) .. (391.84,120.2) -- cycle ;
+%Shape: Circle [id:dp9256399998849116] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (476.84,120.2) .. controls (476.84,118.01) and (478.61,116.24) .. (480.8,116.24) .. controls (482.99,116.24) and (484.76,118.01) .. (484.76,120.2) .. controls (484.76,122.39) and (482.99,124.16) .. (480.8,124.16) .. controls (478.61,124.16) and (476.84,122.39) .. (476.84,120.2) -- cycle ;
+%Shape: Circle [id:dp19073828404662696] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (476.84,177.24) .. controls (476.84,175.06) and (478.61,173.28) .. (480.8,173.28) .. controls (482.99,173.28) and (484.76,175.06) .. (484.76,177.24) .. controls (484.76,179.43) and (482.99,181.2) .. (480.8,181.2) .. controls (478.61,181.2) and (476.84,179.43) .. (476.84,177.24) -- cycle ;
+%Shape: Circle [id:dp9497221537023892] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (391.84,177.24) .. controls (391.84,175.06) and (393.61,173.28) .. (395.8,173.28) .. controls (397.99,173.28) and (399.76,175.06) .. (399.76,177.24) .. controls (399.76,179.43) and (397.99,181.2) .. (395.8,181.2) .. controls (393.61,181.2) and (391.84,179.43) .. (391.84,177.24) -- cycle ;
+
+\end{tikzpicture}\\
+$diam(P_n) = n - 1$\\
+$rad(P_n) = 2$
+\begin{center}
+    
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da39721473805860996] 
+\draw    (204,130) -- (342.8,130.2) ;
+%Shape: Circle [id:dp8015371385317414] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (338.84,130.2) .. controls (338.84,128.01) and (340.61,126.24) .. (342.8,126.24) .. controls (344.99,126.24) and (346.76,128.01) .. (346.76,130.2) .. controls (346.76,132.39) and (344.99,134.16) .. (342.8,134.16) .. controls (340.61,134.16) and (338.84,132.39) .. (338.84,130.2) -- cycle ;
+%Shape: Circle [id:dp3454017225438182] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (204,130) .. controls (204,127.81) and (205.77,126.04) .. (207.96,126.04) .. controls (210.14,126.04) and (211.92,127.81) .. (211.92,130) .. controls (211.92,132.19) and (210.14,133.96) .. (207.96,133.96) .. controls (205.77,133.96) and (204,132.19) .. (204,130) -- cycle ;
+%Shape: Circle [id:dp7796605159384291] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (269.44,130.1) .. controls (269.44,127.91) and (271.21,126.14) .. (273.4,126.14) .. controls (275.59,126.14) and (277.36,127.91) .. (277.36,130.1) .. controls (277.36,132.29) and (275.59,134.06) .. (273.4,134.06) .. controls (271.21,134.06) and (269.44,132.29) .. (269.44,130.1) -- cycle ;
+%Straight Lines [id:da2423011605389933] 
+\draw    (342.8,130.2) -- (402.8,130.2) ;
+%Shape: Circle [id:dp33898503506482647] 
+\draw  [fill={rgb, 255:red, 0; green, 0; blue, 0 }  ,fill opacity=1 ] (394.88,130.2) .. controls (394.88,128.01) and (396.66,126.24) .. (398.84,126.24) .. controls (401.03,126.24) and (402.8,128.01) .. (402.8,130.2) .. controls (402.8,132.39) and (401.03,134.16) .. (398.84,134.16) .. controls (396.66,134.16) and (394.88,132.39) .. (394.88,130.2) -- cycle ;
+%Straight Lines [id:da01117849862985576] 
+\draw    (269.8,146.2) -- (334.8,147.17) ;
+\draw [shift={(336.8,147.2)}, rotate = 180.86] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da4956503091974467] 
+\draw    (269.8,146.2) -- (226.8,146.2) ;
+\draw [shift={(224.8,146.2)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da15616978246440105] 
+\draw    (326.8,165.2) -- (391.8,166.17) ;
+\draw [shift={(393.8,166.2)}, rotate = 180.86] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da415769920881895] 
+\draw    (326.8,165.2) -- (283.8,165.2) ;
+\draw [shift={(281.8,165.2)}, rotate = 360] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (199,105.4) node [anchor=north west][inner sep=0.75pt]    {$v_{1}$};
+% Text Node
+\draw (264,105.4) node [anchor=north west][inner sep=0.75pt]    {$v_{2}$};
+% Text Node
+\draw (333,105.4) node [anchor=north west][inner sep=0.75pt]    {$v_{3}$};
+% Text Node
+\draw (389,106.4) node [anchor=north west][inner sep=0.75pt]    {$v_{4}$};
+
+
+\end{tikzpicture}
+\end{center}
+\item Chu trình: $C_n, \thickspace n \geq 3$\\
+$|V(C_n) = n|\\
+|E(C_n) = n|$
+
+\begin{center}
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Straight Lines [id:da3859459984262468] 
+\draw    (240.6,100) -- (277.93,65.33) ;
+%Straight Lines [id:da4418759897330369] 
+\draw    (277.93,65.33) -- (339.27,65.33) ;
+%Straight Lines [id:da14171591009088091] 
+\draw    (339.27,65.33) -- (379.93,100) ;
+%Straight Lines [id:da2764643522091461] 
+\draw    (240.6,100) -- (280.6,140) ;
+%Straight Lines [id:da1351849139217307] 
+\draw    (280.6,140) -- (341.93,140) ;
+%Straight Lines [id:da39100551617939416] 
+\draw    (341.93,140) -- (379.93,100) ;
+%Shape: Circle [id:dp1694305454664473] 
+\draw   (275.23,65.33) .. controls (275.23,63.84) and (276.44,62.63) .. (277.93,62.63) .. controls (279.42,62.63) and (280.63,63.84) .. (280.63,65.33) .. controls (280.63,66.82) and (279.42,68.03) .. (277.93,68.03) .. controls (276.44,68.03) and (275.23,66.82) .. (275.23,65.33) -- cycle ;
+%Shape: Circle [id:dp015268270792204275] 
+\draw   (336.57,65.33) .. controls (336.57,63.84) and (337.78,62.63) .. (339.27,62.63) .. controls (340.76,62.63) and (341.97,63.84) .. (341.97,65.33) .. controls (341.97,66.82) and (340.76,68.03) .. (339.27,68.03) .. controls (337.78,68.03) and (336.57,66.82) .. (336.57,65.33) -- cycle ;
+%Shape: Circle [id:dp5272686363540373] 
+\draw   (377.23,100) .. controls (377.23,98.51) and (378.44,97.3) .. (379.93,97.3) .. controls (381.42,97.3) and (382.63,98.51) .. (382.63,100) .. controls (382.63,101.49) and (381.42,102.7) .. (379.93,102.7) .. controls (378.44,102.7) and (377.23,101.49) .. (377.23,100) -- cycle ;
+%Shape: Circle [id:dp7263312623310159] 
+\draw   (341.93,137.3) .. controls (341.93,137.3) and (341.93,137.3) .. (341.93,137.3) .. controls (341.93,137.3) and (341.93,137.3) .. (341.93,137.3) .. controls (341.93,137.3) and (341.93,137.3) .. (341.93,137.3) .. controls (341.93,137.3) and (341.93,137.3) .. (341.93,137.3) -- cycle ;
+%Shape: Circle [id:dp3155088945330018] 
+\draw   (237.9,100) .. controls (237.9,98.51) and (239.11,97.3) .. (240.6,97.3) .. controls (242.09,97.3) and (243.3,98.51) .. (243.3,100) .. controls (243.3,101.49) and (242.09,102.7) .. (240.6,102.7) .. controls (239.11,102.7) and (237.9,101.49) .. (237.9,100) -- cycle ;
+%Shape: Circle [id:dp5155717631735042] 
+\draw   (277.9,140) .. controls (277.9,138.51) and (279.11,137.3) .. (280.6,137.3) .. controls (282.09,137.3) and (283.3,138.51) .. (283.3,140) .. controls (283.3,141.49) and (282.09,142.7) .. (280.6,142.7) .. controls (279.11,142.7) and (277.9,141.49) .. (277.9,140) -- cycle ;
+%Shape: Circle [id:dp9692132673945357] 
+\draw   (339.23,140) .. controls (339.23,138.51) and (340.44,137.3) .. (341.93,137.3) .. controls (343.42,137.3) and (344.63,138.51) .. (344.63,140) .. controls (344.63,141.49) and (343.42,142.7) .. (341.93,142.7) .. controls (340.44,142.7) and (339.23,141.49) .. (339.23,140) -- cycle ;
+
+% Text Node
+\draw (432,93.4) node [anchor=north west][inner sep=0.75pt]    {$C_{6}$};
+
+
+\end{tikzpicture}
+\end{center}
+$e(v_i) = \begin{pmatrix}
+\dfrac{n}{2}
+\end{pmatrix}
+$
+\item Đồ thị đầy đủ: $K_n$, n là số đỉnh.
+\\ n = 1, $k_1$ 
+      \begin{tikzpicture}
+    \fill[] (-3,-3) circle (3pt);
+\end{tikzpicture}
+$\\n = 2$, $k_2$
+
+
+\begin{center}
+    
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Circle [id:dp8818293665025874] 
+\draw   (100,109.9) .. controls (100,106.09) and (103.09,103) .. (106.9,103) .. controls (110.71,103) and (113.8,106.09) .. (113.8,109.9) .. controls (113.8,113.71) and (110.71,116.8) .. (106.9,116.8) .. controls (103.09,116.8) and (100,113.71) .. (100,109.9) -- cycle ;
+%Straight Lines [id:da1558786884010701] 
+\draw    (113.8,109.9) -- (158.8,110.2) ;
+%Shape: Circle [id:dp2516760174395114] 
+\draw   (158.8,110.2) .. controls (158.8,106.39) and (161.89,103.3) .. (165.7,103.3) .. controls (169.51,103.3) and (172.6,106.39) .. (172.6,110.2) .. controls (172.6,114.01) and (169.51,117.1) .. (165.7,117.1) .. controls (161.89,117.1) and (158.8,114.01) .. (158.8,110.2) -- cycle ;
+
+
+\end{tikzpicture}
+\end{center}
+$|V(K_n)| = n$
+\\ $|E(K_n)| = \begin{pmatrix}
+    n\\2
+\end{pmatrix}$
+\\$K_n$ xóa 1 đỉnh $\rightarrow K_{n-1}$  
+
+
+\end{enumerate}
+\end{tcolorbox}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{a}
+\section{1}
+\subsection{2}
+\section{2}
+\chapter{2}
+\section{1}
+\chapter{3}
+
+\chapter{4}
+
+
+
+
+\end{document}
+
+
